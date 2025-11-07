@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gallery — Tetrem Presby</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--primary:#1e40af;--accent:#f59e0b}
+    body{font-family:'Poppins',sans-serif;background:#f8fafc}
+    .tag-active{background:var(--primary);color:#fff}
+    .img-card{transition:transform .25s ease,box-shadow .25s ease}
+    .img-card:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(0,0,0,0.12)}
+    .lightbox-backdrop{background:rgba(0,0,0,0.7)}
+    /* Mobile adjustments */
+    @media (max-width: 640px) {
+      .img-card img { height: 10rem; }
+      #gallery-grid { grid-template-columns: repeat(1, minmax(0,1fr)); }
+      .filters-row { -webkit-overflow-scrolling: touch; }
+      .lightbox-backdrop { background: rgba(0,0,0,0.85); }
+      #lb-close, #lb-prev, #lb-next { font-size: 26px; padding: 10px; }
+    }
+
+    /* Ensure lightbox image fits on small viewports */
+    #lightbox img { max-height: calc(100vh - 140px); width: 100%; height: auto; }
+    #lb-close, #lb-prev, #lb-next { background: rgba(0,0,0,0.35); border-radius: 6px; padding: 6px; }
+  </style>
+</head>
+<body>
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold">TP</div>
+        <div class="font-bold text-lg text-blue-900">Tetrem Presby</div>
+      </div>
+      <div>
+        <a href="index.html" class="text-sm text-blue-700 hover:underline mr-4">Home</a>
+        <a href="dashboard.html" class="text-sm text-gray-600 hover:underline">Admin</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto p-6">
+    <header class="mb-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-blue-900">Gallery</h1>
+        <p class="text-gray-600">Browse our photos by category. Click any photo to view full size.</p>
+      </div>
+      <div class="filters-row flex items-center gap-2 overflow-x-auto -mx-2 py-2">
+        <div class="flex items-center px-2">
+          <button data-filter="all" class="px-3 py-1 rounded-md tag-active mx-1 whitespace-nowrap">All</button>
+          <button data-filter="classroom" class="px-3 py-1 rounded-md mx-1 whitespace-nowrap">Classroom</button>
+          <button data-filter="events" class="px-3 py-1 rounded-md mx-1 whitespace-nowrap">Events</button>
+          <button data-filter="campus" class="px-3 py-1 rounded-md mx-1 whitespace-nowrap">Campus</button>
+          <button data-filter="students" class="px-3 py-1 rounded-md mx-1 whitespace-nowrap">Students</button>
+        </div>
+      </div>
+    </header>
+
+  <section id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+      <!-- sample images with categories in data-cat -->
+      <div class="overflow-hidden rounded-lg bg-white img-card" data-cat="classroom">
+        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Classroom" class="w-full h-40 sm:h-44 md:h-48 object-cover cursor-pointer" data-full="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90">
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white img-card" data-cat="events">
+        <img src="https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Event" class="w-full h-40 sm:h-44 md:h-48 object-cover cursor-pointer" data-full="https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90">
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white img-card" data-cat="campus">
+        <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Campus" class="w-full h-40 sm:h-44 md:h-48 object-cover cursor-pointer" data-full="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90">
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white img-card" data-cat="students">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Students" class="w-full h-40 sm:h-44 md:h-48 object-cover cursor-pointer" data-full="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90">
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white img-card" data-cat="classroom">
+        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Classroom" class="w-full h-40 sm:h-44 md:h-48 object-cover cursor-pointer" data-full="https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90">
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white img-card" data-cat="events">
+        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Event" class="w-full h-40 sm:h-44 md:h-48 object-cover cursor-pointer" data-full="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90">
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white img-card" data-cat="campus">
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Campus" class="w-full h-40 sm:h-44 md:h-48 object-cover cursor-pointer" data-full="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90">
+      </div>
+      <div class="overflow-hidden rounded-lg bg-white img-card" data-cat="students">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Student" class="w-full h-48 object-cover cursor-pointer" data-full="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=90">
+      </div>
+    </section>
+
+    <div class="text-center mt-6">
+      <a href="index.html" class="text-sm text-blue-700 hover:underline">Back to Home</a>
+    </div>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="hidden fixed inset-0 z-50 flex items-center justify-center lightbox-backdrop">
+    <div class="relative max-w-4xl w-full mx-4">
+      <button id="lb-close" class="absolute top-2 right-2 text-white text-2xl z-60">&times;</button>
+      <img id="lb-img" src="" alt="" class="w-full h-auto rounded shadow-lg" />
+      <div class="absolute left-2 top-1/2 -translate-y-1/2">
+        <button id="lb-prev" class="text-white text-2xl px-3">⟨</button>
+      </div>
+      <div class="absolute right-2 top-1/2 -translate-y-1/2">
+        <button id="lb-next" class="text-white text-2xl px-3">⟩</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Filtering logic
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const cards = Array.from(document.querySelectorAll('#gallery-grid > div'));
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b=>b.classList.remove('tag-active'));
+        btn.classList.add('tag-active');
+        const cat = btn.getAttribute('data-filter');
+        cards.forEach(c => {
+          const cc = c.getAttribute('data-cat');
+          if (cat === 'all' || cc === cat) c.style.display = '';
+          else c.style.display = 'none';
+        });
+      });
+    });
+
+    // Lightbox logic
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const imgs = Array.from(document.querySelectorAll('#gallery-grid img'));
+    let currentIndex = -1;
+    function openAt(i){
+      const src = imgs[i].getAttribute('data-full') || imgs[i].src;
+      lbImg.src = src;
+      currentIndex = i;
+      lightbox.classList.remove('hidden');
+    }
+    imgs.forEach((img, i)=> img.addEventListener('click', ()=> openAt(i)));
+    document.getElementById('lb-close').addEventListener('click', ()=> lightbox.classList.add('hidden'));
+    document.getElementById('lb-prev').addEventListener('click', ()=>{
+      if (currentIndex <= 0) currentIndex = imgs.length -1; else currentIndex--;
+      openAt(currentIndex);
+    });
+    document.getElementById('lb-next').addEventListener('click', ()=>{
+      if (currentIndex >= imgs.length -1) currentIndex = 0; else currentIndex++;
+      openAt(currentIndex);
+    });
+    lightbox.addEventListener('click', (e)=>{ if (e.target === lightbox) lightbox.classList.add('hidden'); });
+  </script>
+</body>
+</html>

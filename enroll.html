@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll - Tetrem Presby Basic School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white font-bold mr-3">TP</div>
+                <span class="font-bold text-lg text-blue-900">Tetrem Presby</span>
+            </div>
+            <div>
+                <a href="index.html" class="text-blue-700 hover:underline">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto p-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-blue-900 mb-4">Enrollment Form</h1>
+        <p class="text-gray-600 mb-6">Please complete this form to apply for admission. Fields marked with * are required.</p>
+
+        <form id="enroll-form" class="bg-white p-6 rounded-lg shadow">
+            <fieldset class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-1 font-medium">Child Full Name *</label>
+                    <input type="text" id="childName" required class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Date of Birth *</label>
+                    <input type="date" id="dob" required class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Gender</label>
+                    <select id="gender" class="w-full border rounded px-3 py-2">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Desired Class *</label>
+                    <select id="desiredClass" required class="w-full border rounded px-3 py-2">
+                        <option value="">Select</option>
+                        <option>Primary 1</option>
+                        <option>Primary 2</option>
+                        <option>Primary 3</option>
+                        <option>Primary 4</option>
+                        <option>Primary 5</option>
+                        <option>Primary 6</option>
+                        <option>JHS 1</option>
+                        <option>JHS 2</option>
+                        <option>JHS 3</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Term (e.g., Sept 2025)</label>
+                    <input type="text" id="term" class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Parent / Guardian Name *</label>
+                    <input type="text" id="parentName" required class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Parent Phone *</label>
+                    <input type="tel" id="parentPhone" required class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block mb-1 font-medium">Parent Email *</label>
+                    <input type="email" id="parentEmail" required class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block mb-1 font-medium">Address</label>
+                    <input type="text" id="address" class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block mb-1 font-medium">Previous School</label>
+                    <input type="text" id="previousSchool" class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block mb-1 font-medium">Emergency Contact</label>
+                    <input type="text" id="emergencyContact" class="w-full border rounded px-3 py-2">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block mb-1 font-medium">Medical / Allergies (optional)</label>
+                    <textarea id="medicalNotes" rows="3" class="w-full border rounded px-3 py-2"></textarea>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block mb-1 font-medium">Photo (optional)</label>
+                    <input type="file" id="photo" accept="image/*" class="w-full">
+                </div>
+            </fieldset>
+
+            <div class="mt-6 flex items-center justify-between">
+                <div id="form-error" class="text-red-600 hidden"></div>
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded-lg">Submit Application</button>
+            </div>
+        </form>
+
+        <p class="text-sm text-gray-500 mt-4">By submitting, you agree to our admissions process. We may contact you for additional information.</p>
+    </main>
+
+    <script>
+        document.getElementById('enroll-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const childName = document.getElementById('childName').value.trim();
+            const dob = document.getElementById('dob').value;
+            const desiredClass = document.getElementById('desiredClass').value;
+            const parentName = document.getElementById('parentName').value.trim();
+            const parentPhone = document.getElementById('parentPhone').value.trim();
+            const parentEmail = document.getElementById('parentEmail').value.trim();
+            const errorEl = document.getElementById('form-error');
+
+            // basic validation
+            if (!childName || !dob || !desiredClass || !parentName || !parentPhone || !parentEmail) {
+                errorEl.textContent = 'Please fill in all required fields marked with *.';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            // simple email and phone checks
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(parentEmail)) {
+                errorEl.textContent = 'Please enter a valid parent email address.';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            // proceed: in this prototype we redirect to thank-you page with child's name
+            const params = new URLSearchParams({ name: childName });
+            window.location.href = 'thank-you.html?' + params.toString();
+        });
+    </script>
+</body>
+</html>

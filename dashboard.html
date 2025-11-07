@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetrem Presby School Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --secondary: #f59e0b;
+            --accent: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Card Hover Effects */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.1), 0 5px 5px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Welcome Badge Styles
+           Default: centered and fixed for small screens.
+           On md+ screens the left offset is adjusted so the badge starts after the sidebar (w-64 = 16rem).
+        */
+        .welcome-badge {
+            position: fixed;
+            top: 80px; /* Below the top navigation */
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 2rem);
+            max-width: 1200px;
+            z-index: 30;
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin: 0;
+        }
+
+        /* Desktop: offset badge to the right of the sidebar (sidebar = w-64 = 16rem)
+           Keep a 1rem right gap so it doesn't touch the viewport edge. */
+        @media (min-width: 768px) {
+            /* Make the badge stretch between the sidebar and the page edge with 1rem gutters.
+               Using left/right instead of a fixed width avoids rounding/overflow issues. */
+            .welcome-badge {
+                left: calc(16rem + 1rem); /* sidebar (16rem) + left gutter (1rem) */
+                right: 1rem; /* right gutter */
+                transform: none;
+                width: auto; /* let left/right determine width to avoid overflow */
+                max-width: 1200px; /* cap maximum width for very wide screens */
+                box-sizing: border-box;
+            }
+        }
+
+        .welcome-badge h2 {
+            color: white;
+            font-weight: 700;
+        }
+
+        .welcome-badge p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Add margin to main content to account for fixed badge */
+        .main-content {
+            margin-top: 140px; /* Height of badge + spacing */
+        }
+        
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            .mobile-padding {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .mobile-text-center {
+                text-align: center;
+            }
+            
+            .mobile-stack {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .mobile-mb-4 {
+                margin-bottom: 1rem;
+            }
+            
+            .mobile-mb-8 {
+                margin-bottom: 2rem;
+            }
+            
+            .mobile-py-12 {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+            
+            .mobile-py-16 {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+            
+            .mobile-text-3xl {
+                font-size: 1.875rem;
+                line-height: 2.25rem;
+            }
+            
+            .mobile-text-4xl {
+                font-size: 2.25rem;
+                line-height: 2.5rem;
+            }
+            
+            .mobile-text-lg {
+                font-size: 1.125rem;
+                line-height: 1.75rem;
+            }
+            
+            .mobile-gap-4 {
+                gap: 1rem;
+            }
+            
+            .mobile-gap-6 {
+                gap: 1.5rem;
+            }
+            
+            .mobile-grid-cols-1 {
+                grid-template-columns: 1fr;
+            }
+            
+            .mobile-w-full {
+                width: 100%;
+            }
+            
+            .mobile-scale-95 {
+                transform: scale(0.95);
+            }
+            
+            .mobile-scale-100 {
+                transform: scale(1);
+            }
+            
+            .welcome-badge {
+                width: calc(100% - 1rem);
+                top: 70px;
+                padding: 0.75rem 1rem; /* reduce padding on small screens */
+            }
+
+            /* Smaller text for welcome badge on mobile */
+            .welcome-badge h2 {
+                font-size: 1rem; /* ~16px */
+                line-height: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .welcome-badge p {
+                font-size: 0.9rem; /* ~14.4px */
+                line-height: 1.25rem;
+            }
+            
+            .main-content {
+                margin-top: 130px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Dashboard Layout -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 bg-white border-r border-gray-200">
+                <div class="flex items-center justify-center h-16 px-4 bg-primary text-white">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary font-bold mr-2">
+                            TP
+                        </div>
+                        <span class="text-lg font-bold">Tetrem Presby</span>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+                    <nav class="flex-1 space-y-3"> <!-- increased vertical spacing between items -->
+                        <a href="students.html" class="flex items-center px-4 py-4 text-sm font-medium rounded-lg bg-primary/10 text-primary">
+                            <i class="fas fa-home w-5 h-5 mr-3"></i>
+                            Dashboard
+                        </a>
+                        <a href="students.html" class="flex items-center px-4 py-4 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-users w-5 h-5 mr-3"></i>
+                            Students
+                        </a>
+                        <a href="academics.html" class="flex items-center px-4 py-4 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-book w-5 h-5 mr-3"></i>
+                            Academics
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-4 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-calendar w-5 h-5 mr-3"></i>
+                            Events
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-4 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-dollar-sign w-5 h-5 mr-3"></i>
+                            Finances
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-4 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-file-text w-5 h-5 mr-3"></i>
+                            Reports
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-4 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-cog w-5 h-5 mr-3"></i>
+                            Settings
+                        </a>
+                    </nav>
+                </div>
+                <div class="p-4 border-t border-gray-200">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Admin">
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">Admin User</p>
+                            <p class="text-sm text-gray-500">School Administrator</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Sidebar -->
+                <div class="md:hidden fixed inset-0 z-40 hidden" id="mobile-sidebar">
+            <div class="fixed inset-0 bg-gray-600 bg-opacity-75" id="mobile-sidebar-backdrop"></div>
+                <div class="relative flex flex-col w-full max-w-xs bg-white">
+                    <div class="flex items-center justify-between h-16 px-4 bg-primary text-white">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary font-bold mr-2">
+                            TP
+                        </div>
+                        <span class="text-lg font-bold">Tetrem Presby</span>
+                    </div>
+                    <button id="mobile-sidebar-close" class="text-white">
+                        <i class="fas fa-times w-6 h-6"></i>
+                    </button>
+                </div>
+                <div class="flex-1 px-4 py-4 overflow-y-auto">
+                    <nav class="space-y-2"> <!-- mobile sidebar: keep tighter vertical spacing (desktop uses larger spacing) -->
+                        <a href="students.html" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg bg-primary/10 text-primary">
+                            <i class="fas fa-home w-5 h-5 mr-3"></i>
+                            Dashboard
+                        </a>
+                        <a href="students.html" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-users w-5 h-5 mr-3"></i>
+                            Students
+                        </a>
+                        <a href="academics.html" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-book w-5 h-5 mr-3"></i>
+                            Academics
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-calendar w-5 h-5 mr-3"></i>
+                            Events
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-dollar-sign w-5 h-5 mr-3"></i>
+                            Finances
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-file-text w-5 h-5 mr-3"></i>
+                            Reports
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100">
+                            <i class="fas fa-cog w-5 h-5 mr-3"></i>
+                            Settings
+                        </a>
+                    </nav>
+                </div>
+                <div class="p-4 border-t border-gray-200">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Admin">
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">Admin User</p>
+                            <p class="text-sm text-gray-500">School Administrator</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top Navigation -->
+            <div class="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
+                <div class="flex items-center">
+                    <button id="mobile-menu-button" class="md:hidden text-gray-500 hover:text-gray-600 mr-2">
+                        <i class="fas fa-bars w-6 h-6"></i>
+                    </button>
+                    <h1 class="text-lg font-semibold text-gray-800">Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-1 text-gray-500 hover:text-gray-600">
+                        <i class="fas fa-bell w-5 h-5"></i>
+                    </button>
+                    <div class="relative">
+                        <button class="flex items-center text-sm focus:outline-none" id="user-menu-button">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Admin">
+                        </button>
+                        <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50" id="user-menu">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Welcome Badge (Fixed at top) -->
+            <div class="welcome-badge rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold mb-2">Welcome back, Admin!</h2>
+                        <p class="text-blue-100">Here's what's happening at Tetrem Presby Basic School today.</p>
+                    </div>
+                    <div class="hidden md:block">
+                        <i class="fas fa-school text-4xl text-yellow-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="flex-1 overflow-auto p-4 main-content">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg shadow p-6 card-hover">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-primary/10 text-primary mr-4">
+                                <i class="fas fa-users w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Total Students</p>
+                                <p class="text-2xl font-semibold text-gray-800">235</p>
+                                <p class="text-xs text-green-500">+12 this month</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6 card-hover">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-secondary/10 text-secondary mr-4">
+                                <i class="fas fa-user-check w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Teaching Staff</p>
+                                <p class="text-2xl font-semibold text-gray-800">16</p>
+                                <p class="text-xs text-green-500">+2 this year</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6 card-hover">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+                                <i class="fas fa-book w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Courses</p>
+                                <p class="text-2xl font-semibold text-gray-800">22</p>
+                                <p class="text-xs text-gray-500">No change</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6 card-hover">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                                <i class="fas fa-dollar-sign w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Revenue</p>
+                                <p class="text-2xl font-semibold text-gray-800">₵45,320</p>
+                                <p class="text-xs text-green-500">+8% from last term</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity and Enrollment Chart -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow p-6 card-hover">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Student Enrollment Trend</h2>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 text-xs bg-primary text-white rounded">This Year</button>
+                                <button class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded">Last Year</button>
+                            </div>
+                        </div>
+                        <div class="h-64">
+                            <!-- Chart Placeholder -->
+                            <div class="flex items-center justify-center h-full bg-gray-50 rounded">
+                                <div class="text-center">
+                                    <i class="fas fa-chart-line text-4xl text-gray-300 mb-2"></i>
+                                    <p class="text-gray-500">Enrollment chart will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6 card-hover">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Recent Activity</h2>
+                            <button class="text-sm text-primary">View All</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mt-1">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                                        <i class="fas fa-user-plus w-4 h-4"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-800">New student enrolled</p>
+                                    <p class="text-xs text-gray-500">Kofi Mensah joined Primary 1</p>
+                                    <p class="text-xs text-gray-400">2 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mt-1">
+                                    <div class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center">
+                                        <i class="fas fa-exclamation-circle w-4 h-4"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-800">Fee payment overdue</p>
+                                    <p class="text-xs text-gray-500">5 students have unpaid fees</p>
+                                    <p class="text-xs text-gray-400">5 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mt-1">
+                                    <div class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                                        <i class="fas fa-calendar w-4 h-4"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-800">New event added</p>
+                                    <p class="text-xs text-gray-500">Parent-Teacher meeting on Friday</p>
+                                    <p class="text-xs text-gray-400">1 day ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 mt-1">
+                                    <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center">
+                                        <i class="fas fa-award w-4 h-4"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-800">Academic achievement</p>
+                                    <p class="text-xs text-gray-500">JHS 2 won regional science competition</p>
+                                    <p class="text-xs text-gray-400">2 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Students and Upcoming Events -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow p-6 card-hover">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Recent Students</h2>
+                            <button class="text-sm text-primary">View All</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Joined</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="relative px-6 py-3"><span class="sr-only">Action</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Student">
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Kofi Mensah</div>
+                                                    <div class="text-sm text-gray-500">kofi.mensah@example.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">Primary 1</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-500">15 Jan 2023</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-primary hover:text-primary-dark">View</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Student">
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Ama Serwaa</div>
+                                                    <div class="text-sm text-gray-500">ama.serwaa@example.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">JHS 1</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-500">10 Jan 2023</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-primary hover:text-primary-dark">View</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Student">
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Yaw Boateng</div>
+                                                    <div class="text-sm text-gray-500">yaw.boateng@example.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">Primary 3</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-500">5 Jan 2023</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="#" class="text-primary hover:text-primary-dark">View</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6 card-hover">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Upcoming Events</h2>
+                            <button class="text-sm text-primary">View All</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start p-3 rounded-lg bg-blue-50">
+                                <div class="flex-shrink-0 mt-1">
+                                    <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+                                        <span class="text-sm font-medium">12</span>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-800">Parent-Teacher Meeting</p>
+                                    <p class="text-xs text-gray-500">9:00 AM - 12:00 PM</p>
+                                    <p class="text-xs text-gray-400">School Hall</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start p-3 rounded-lg">
+                                <div class="flex-shrink-0 mt-1">
+                                    <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center">
+                                        <span class="text-sm font-medium">15</span>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-800">Science Fair</p>
+                                    <p class="text-xs text-gray-500">10:00 AM - 2:00 PM</p>
+                                    <p class="text-xs text-gray-400">Science Lab</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start p-3 rounded-lg">
+                                <div class="flex-shrink-0 mt-1">
+                                    <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center">
+                                        <span class="text-sm font-medium">20</span>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-800">Sports Day</p>
+                                    <p class="text-xs text-gray-500">8:00 AM - 4:00 PM</p>
+                                    <p class="text-xs text-gray-400">School Field</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start p-3 rounded-lg">
+                                <div class="flex-shrink-0 mt-1">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center">
+                                        <span class="text-sm font-medium">25</span>
+                                    </div>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-800">Cultural Day</p>
+                                    <p class="text-xs text-gray-500">9:00 AM - 3:00 PM</p>
+                                    <p class="text-xs text-gray-400">School Grounds</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            mobileSidebar.classList.toggle('hidden');
+        });
+        
+        // Mobile sidebar close button
+        document.getElementById('mobile-sidebar-close').addEventListener('click', function() {
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            mobileSidebar.classList.add('hidden');
+        });
+        
+        // Close mobile sidebar when clicking on backdrop
+        document.getElementById('mobile-sidebar-backdrop').addEventListener('click', function() {
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            mobileSidebar.classList.add('hidden');
+        });
+        
+        // User menu toggle
+        document.getElementById('user-menu-button').addEventListener('click', function() {
+            const userMenu = document.getElementById('user-menu');
+            userMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            
+            if (!mobileSidebar.classList.contains('hidden') && 
+                !mobileSidebar.contains(event.target) && 
+                !mobileMenuButton.contains(event.target)) {
+                mobileSidebar.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

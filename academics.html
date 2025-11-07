@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academics — Tetrem Presby Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --primary: #1e40af; --primary-dark: #1e3a8a; }
+        body { font-family: 'Poppins', sans-serif; }
+        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+        .bg-primary { background: var(--primary); }
+        .text-primary { color: var(--primary); }
+        .program-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+        .program-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .program-card { cursor: pointer; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container">
+        <header class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-semibold">Academics</h1>
+            <div>
+                <a href="dashboard.html" class="px-4 py-2 bg-primary text-white rounded-lg">Back to Dashboard</a>
+            </div>
+        </header>
+
+        <section class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-lg font-medium mb-4">Programs & Curriculum</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 border rounded program-card" data-title="Primary" data-desc="Overview, subjects, and class schedules for primary levels.">
+                    <h3 class="font-semibold">Primary</h3>
+                    <p class="text-sm text-gray-600">Overview, subjects, and class schedules for primary levels.</p>
+                </div>
+                <div class="p-4 border rounded program-card" data-title="JHS" data-desc="Junior High School curriculum and assessments.">
+                    <h3 class="font-semibold">JHS</h3>
+                    <p class="text-sm text-gray-600">Junior High School curriculum and assessments.</p>
+                </div>
+                <div class="p-4 border rounded program-card" data-title="Extracurricular" data-desc="Clubs, activities, and enrichment programs.">
+                    <h3 class="font-semibold">Extracurricular</h3>
+                    <p class="text-sm text-gray-600">Clubs, activities, and enrichment programs.</p>
+                </div>
+            </div>
+        </section>
+
+    <script>
+        // Make program cards interactive: click to show a quick detail popup
+        document.querySelectorAll('.program-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.getAttribute('data-title') || card.querySelector('h3')?.textContent || 'Program';
+                const desc = card.getAttribute('data-desc') || card.querySelector('p')?.textContent || '';
+                alert(title + "\n\n" + desc);
+            });
+        });
+    </script>
+    </div>
+</body>
+</html>

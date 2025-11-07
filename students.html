@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students — Tetrem Presby Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --primary: #1e40af; --primary-dark: #1e3a8a; }
+        body { font-family: 'Poppins', sans-serif; }
+        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+        /* small helpers to match dashboard theme */
+        .bg-primary { background: var(--primary); }
+        .text-primary { color: var(--primary); }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .modal-backdrop { background: rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container">
+        <header class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-semibold">Students</h1>
+            <div>
+                <a href="dashboard.html" class="px-4 py-2 bg-primary text-white rounded-lg">Back to Dashboard</a>
+            </div>
+        </header>
+
+        <section class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-medium">Student Directory</h2>
+                <button id="add-student-btn" class="px-3 py-1 bg-green-500 text-white rounded">Add Student</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4">Kofi Mensah</td>
+                            <td class="px-6 py-4">Primary 1</td>
+                            <td class="px-6 py-4">Active</td>
+                            <td class="px-6 py-4 text-right"><a href="#" class="text-primary">View</a></td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4">Ama Serwaa</td>
+                            <td class="px-6 py-4">JHS 1</td>
+                            <td class="px-6 py-4">Active</td>
+                            <td class="px-6 py-4 text-right"><a href="#" class="text-primary">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="absolute inset-0 modal-backdrop"></div>
+        <div class="bg-white rounded-lg shadow-lg z-60 w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Add Student</h3>
+                <button id="close-modal" class="text-gray-500">&times;</button>
+            </div>
+            <form id="add-student-form">
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-700">Name</label>
+                    <input required id="student-name" class="w-full border px-3 py-2 rounded" />
+                </div>
+                <div class="mb-3">
+                    <label class="block text-sm text-gray-700">Class</label>
+                    <input id="student-class" class="w-full border px-3 py-2 rounded" />
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal controls
+        const addBtn = document.getElementById('add-student-btn');
+        const modal = document.getElementById('add-student-modal');
+        const closeModal = document.getElementById('close-modal');
+        const form = document.getElementById('add-student-form');
+
+        addBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+        closeModal.addEventListener('click', () => modal.classList.add('hidden'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('student-name').value.trim();
+            const klass = document.getElementById('student-class').value.trim() || 'N/A';
+            if (!name) return alert('Please enter a name');
+
+            const tbody = document.querySelector('table tbody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `\n                <td class="px-6 py-4">${name}</td>\n                <td class="px-6 py-4">${klass}</td>\n                <td class="px-6 py-4">Active</td>\n                <td class="px-6 py-4 text-right"><a href="#" class="text-primary view-link">View</a></td>\n            `;
+            tbody.appendChild(tr);
+            modal.classList.add('hidden');
+            form.reset();
+        });
+
+        // Delegate view clicks to show a quick detail
+        document.querySelector('table').addEventListener('click', (e) => {
+            if (e.target.classList.contains('view-link')) {
+                e.preventDefault();
+                const row = e.target.closest('tr');
+                const name = row.children[0].textContent.trim();
+                const klass = row.children[1].textContent.trim();
+                alert(`${name} — ${klass}`);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -136,6 +136,19 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.1), 0 5px 5px -5px rgba(0, 0, 0, 0.04);
         }
+
+        /* Generic reveal-on-scroll helper */
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
         
         /* Interactive Elements */
         .interactive-btn {
@@ -325,7 +338,7 @@
                 </div>
                 
                 <div class="flex items-center space-x-3 md:space-x-4">
-                    <a href="#enroll" class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-3 py-2 md:px-4 md:py-2 rounded-lg transition-colors interactive-btn text-sm md:text-base mobile-scale-95">
+                    <a href="enroll.html" class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-3 py-2 md:px-4 md:py-2 rounded-lg transition-colors interactive-btn text-sm md:text-base mobile-scale-95">
                         Enroll Now
                     </a>
                     <button id="mobile-menu-button" class="md:hidden text-gray-700">
@@ -352,8 +365,8 @@
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden pt-16">
         <!-- Background Image with Overlay -->
         <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-700/70 z-10"></div>
-            <img src="Student.jpg" 
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-900/40 to-blue-700/40 z-10"></div>
+            <img src="presby.png" 
                  alt="School children in classroom" 
                  class="w-full h-full object-cover">
         </div>
@@ -368,10 +381,10 @@
                 Nurturing young minds with excellence, faith, and character in Tetrem, Ashanti Region
             </p>
             <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center animate-fadeInUp mobile-stack" style="animation-delay: 0.4s;">
-                <a href="#enroll" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-lg transition-all interactive-btn animate-pulse-slow text-sm md:text-base mobile-w-full mobile-text-center">
+                <a href="enroll.html" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-lg transition-all interactive-btn animate-pulse-slow text-sm md:text-base mobile-w-full mobile-text-center">
                     <i class="fas fa-user-graduate mr-2"></i>Enroll Now
                 </a>
-                <a href="#about" class="bg-transparent border-2 border-white text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg hover:bg-white hover:text-blue-900 transition-all interactive-btn text-sm md:text-base mobile-w-full mobile-text-center">
+                <a href="#about" class="bg-transparent border-2 border-white text-white font-semibold px-6 py-3 md:px-8 md:py-4 rounded-lg hover:bg-white hover:text-blue-900 transition-all interactive-btn text-sm md:text-base mobile-w-full mobile-text-center reveal" style="animation-delay: 0.4s;">
                     <i class="fas fa-play-circle mr-2"></i>Watch Video
                 </a>
             </div>
@@ -394,16 +407,16 @@
                 <p class="text-gray-600 max-w-2xl mx-auto mobile-text-lg">Tetrem Presby Basic School is a faith-based educational institution committed to providing quality education rooted in Christian values.</p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center mobile-grid-cols-1 mobile-gap-6">
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center mobile-grid-cols-1 mobile-gap-6 reveal">
                 <div class="relative mobile-mb-8">
                     <div class="rounded-xl md:rounded-2xl overflow-hidden shadow-lg md:shadow-2xl">
-                        <img src="Student.jpg" 
+                        <img src="presby.png" 
                              alt="School classroom" 
                              class="w-full h-auto object-cover transition-transform duration-700 hover:scale-105">
                     </div>
                     
                     <!-- Floating Stats Card -->
-                    <div class="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 bg-white p-4 md:p-6 rounded-lg md:rounded-xl shadow-lg md:shadow-xl animate-fadeInRight mobile-scale-95" style="animation-delay: 0.5s;">
+                    <div class="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 bg-white p-4 md:p-6 rounded-lg md:rounded-xl shadow-lg md:shadow-xl animate-fadeInRight mobile-scale-95 reveal" style="animation-delay: 0.5s;">
                         <div class="flex items-center">
                             <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-full flex items-center justify-center mr-3 md:mr-4">
                                 <i class="fas fa-award text-blue-600 text-lg md:text-xl"></i>
@@ -416,12 +429,12 @@
                     </div>
                 </div>
                 
-                <div class="animate-fadeInLeft mobile-text-center md:text-left">
+                <div class="animate-fadeInLeft mobile-text-center md:text-left reveal">
                     <h3 class="text-xl md:text-2xl font-bold text-blue-900 mb-4 md:mb-6 mobile-text-3xl">Nurturing Future Leaders</h3>
                     <p class="text-gray-700 mb-4 mobile-text-lg">We nurture young minds to become responsible citizens through a holistic approach to learning that balances academic excellence with moral development.</p>
                     <p class="text-gray-700 mb-6 mobile-text-lg">Our dedicated teachers provide personalized attention to help each child discover and develop their unique talents and abilities.</p>
                     
-                    <div class="grid grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-8 mobile-gap-4">
+                    <div class="grid grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-8 mobile-gap-4 reveal">
                         <div class="flex items-center mobile-justify-center md:justify-start">
                             <div class="w-8 h-8 md:w-10 md:h-10 bg-green-100 rounded-full flex items-center justify-center mr-2 md:mr-3">
                                 <i class="fas fa-check text-green-600 text-sm md:text-base"></i>
@@ -452,6 +465,43 @@
                         Learn More About Us
                         <i class="fas fa-arrow-right ml-2"></i>
                     </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academics Section -->
+    <section id="academics" class="py-12 md:py-20 px-4 bg-white mobile-padding reveal">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-8 md:mb-16 mobile-mb-8">
+                <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-900 mb-4 mobile-text-3xl">Our Academic Programs</h2>
+                <div class="w-20 md:w-24 h-1 bg-yellow-500 mx-auto mb-4 md:mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto mobile-text-lg">Tetrem Presby offers a balanced curriculum across Primary and Junior High levels, focused on academic excellence, moral development and co-curricular growth.</p>
+            </div>
+
+                <div class="grid md:grid-cols-3 gap-6 md:gap-8 mobile-grid-cols-1 mobile-gap-6 reveal">
+                <div class="bg-white p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg card-hover mobile-w-full">
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 mx-auto">
+                        <i class="fas fa-book-reader text-white text-xl md:text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold mb-3 text-center text-blue-900">Primary School</h3>
+                    <p class="text-gray-600 text-center text-sm md:text-base">Strong foundational lessons in literacy, numeracy and values; prepared to transition successfully to JHS.</p>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg card-hover mobile-w-full">
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-green-700 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 mx-auto">
+                        <i class="fas fa-chalkboard-teacher text-white text-xl md:text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold mb-3 text-center text-blue-900">Junior High School</h3>
+                    <p class="text-gray-600 text-center text-sm md:text-base">A robust JHS program with subject-specialist teachers, exam preparation and career guidance.</p>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg card-hover mobile-w-full">
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 mx-auto">
+                        <i class="fas fa-graduation-cap text-white text-xl md:text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold mb-3 text-center text-blue-900">Curriculum & Activities</h3>
+                    <p class="text-gray-600 text-center text-sm md:text-base">Broad curriculum including science, arts, sports and moral education plus clubs and community activities.</p>
                 </div>
             </div>
         </div>
@@ -528,7 +578,7 @@
                 <p class="text-gray-600 max-w-2xl mx-auto mobile-text-lg">Take a glimpse into our vibrant school community and the enriching experiences we offer.</p>
             </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 stagger-animation mobile-gap-3">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 stagger-animation mobile-gap-3 reveal">
                 <div class="overflow-hidden rounded-lg md:rounded-xl shadow-lg group relative">
                     <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
                          alt="Students in class" 
@@ -576,7 +626,7 @@
             </div>
             
             <div class="text-center mt-8 md:mt-12">
-                <a href="#" class="inline-flex items-center bg-blue-700 hover:bg-blue-800 text-white font-semibold px-5 py-3 md:px-6 md:py-3 rounded-lg transition-colors interactive-btn text-sm md:text-base">
+                <a href="gallery.html" class="inline-flex items-center bg-blue-700 hover:bg-blue-800 text-white font-semibold px-5 py-3 md:px-6 md:py-3 rounded-lg transition-colors interactive-btn text-sm md:text-base">
                     <i class="fas fa-images mr-2"></i>View Full Gallery
                 </a>
             </div>
@@ -848,20 +898,22 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fadeInUp');
+                        // If element uses the generic reveal helper, toggle its visible state
+                        if (entry.target.classList.contains('reveal')) {
+                            entry.target.classList.add('is-visible');
+                        } else {
+                            entry.target.classList.add('animate-fadeInUp');
+                        }
                         observer.unobserve(entry.target);
                     }
                 });
             }, observerOptions);
             
             // Observe elements for animation
-            document.querySelectorAll('.stagger-animation > *').forEach(el => {
-                observer.observe(el);
-            });
-            
-            document.querySelectorAll('.animate-fadeInLeft, .animate-fadeInRight').forEach(el => {
-                observer.observe(el);
-            });
+                document.querySelectorAll('.stagger-animation > *').forEach(el => observer.observe(el));
+                document.querySelectorAll('.animate-fadeInLeft, .animate-fadeInRight').forEach(el => observer.observe(el));
+                // Observe generic reveal elements
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
         
         // Counter animation
